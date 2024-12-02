@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Автомагазин</title>
+
+    <!-- Подключение Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Подключение Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <!-- Подключение jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Подключение Slick Carousel -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 50px;
+        }
+        #content {
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+        }
+        .car-item {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+        .car-item img {
+            width: 100px;
+            margin-right: 20px;
+            border-radius: 8px;
+        }
+        .btn {
+            margin: 5px;
+        }
+        .slider img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .slider {
+            margin-top: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        button {
+            margin: 5px;
+        }
+        .actions button {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="content" class="container">
+        <h1>Добро пожаловать в Автомагазин!</h1>
+        <p>Ниже представлены автомобили на продажу:</p>
+
+        <!-- Фильтрация по цене -->
+        <div class="input-group mb-3">
+            <input type="number" id="maxPrice" class="form-control" placeholder="Максимальная цена">
+            <button id="filterCars" class="btn btn-success"><i class="fas fa-filter"></i> Сбросить фильтр</button>
+        </div>
+
+        <!-- Кнопка для изменения фона сайта -->
+        <button id="changeBackground" class="btn btn-warning">
+            <i class="fas fa-paint-roller"></i> Изменить фон
+        </button>
+    </div>
+
+    <!-- Список автомобилей -->
+    <div id="carList" class="container">
+        <!-- Пример одного автомобиля -->
+        <div class="car-item" data-name="BMW X5" data-price="3000000">
+            <img src="https://media.ed.edmunds-media.com/bmw/x5/2024/oem/2024_bmw_x5_4dr-suv_xdrive50e_fq_oem_1_1280.jpg" alt="BMW X5">
+            <div>
+                <h2>BMW X5</h2>
+                <p>Цена: 3,000,000 ₽</p>
+                <button class="btn btn-primary buy-btn"><i class="fas fa-shopping-cart"></i> Купить</button>
+                <button class="btn btn-danger delete-btn"><i class="fas fa-trash"></i> Удалить</button>
+            </div>
+        </div>
+
+        <div class="car-item" data-name="Audi A6" data-price="2500000">
+            <img src="https://apiweb.rolf.ru/storage/thumbnails/large/models/10/4916/f1316c5c39bf91824f49acc0459b6596.png" alt="Audi A6">
+            <div>
+                <h2>Audi A6</h2>
+                <p>Цена: 2,500,000 ₽</p>
+                <button class="btn btn-primary buy-btn"><i class="fas fa-shopping-cart"></i> Купить</button>
+                <button class="btn btn-danger delete-btn"><i class="fas fa-trash"></i> Удалить</button>
+            </div>
+        </div>
+
+        <div class="car-item" data-name="Mercedes-Benz C-Class" data-price="3200000">
+            <img src="https://s.auto.drom.ru/i24218/c/photos/fullsize/mercedes-benz/c-class/mercedes-benz_c-class_791153.jpg" alt="Mercedes-Benz C-Class">
+            <div>
+                <h2>Mercedes-Benz C-Class</h2>
+                <p>Цена: 3,200,000 ₽</p>
+                <button class="btn btn-primary buy-btn"><i class="fas fa-shopping-cart"></i> Купить</button>
+                <button class="btn btn-danger delete-btn"><i class="fas fa-trash"></i> Удалить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Слайдер -->
+    <div class="container">
+        <h3>Фото автомобилей</h3>
+        <div class="slider">
+            <div><img src="https://media.ed.edmunds-media.com/bmw/x5/2024/oem/2024_bmw_x5_4dr-suv_xdrive50e_fq_oem_1_1280.jpg" alt="BMW X5"></div>
+            <div><img src="https://apiweb.rolf.ru/storage/thumbnails/large/models/10/4916/f1316c5c39bf91824f49acc0459b6596.png" alt="Audi A6"></div>
+            <div><img src="https://s.auto.drom.ru/i24218/c/photos/fullsize/mercedes-benz/c-class/mercedes-benz_c-class_791153.jpg" alt="Mercedes-Benz C-Class"></div>
+            <div><img src="https://teslaone.ru/img/tesla-s/configurator/tesla-s.jpg" alt="Tesla Model S"></div>
+        </div>
+    </div>
+<!-- Форма для добавления нового автомобиля -->
+<div id="addCarSection" class="container mt-4">
+    <h2>Добавить новый автомобиль</h2>
+    <form id="addCarForm">
+        <div class="mb-3">
+            <input type="text" id="carName" class="form-control" placeholder="Название автомобиля" required>
+        </div>
+        <div class="mb-3">
+            <input type="number" id="carPrice" class="form-control" placeholder="Цена автомобиля" required>
+        </div>
+        <div class="mb-3">
+            <input type="text" id="carImage" class="form-control" placeholder="URL изображения" required>
+        </div>
+        <button type="submit" class="btn btn-success">Добавить автомобиль</button>
+    </form>
+</div>
+ <h1>Автомобили</h1>
+
+    <!-- Фильтрация и сортировка -->
+    <div>
+        <button id="sortName">Сортировать по имени</button>
+        <button id="sortPriceAsc">Сортировать по цене (возрастание)</button>
+        <button id="sortPriceDesc">Сортировать по цене (убывание)</button>
+        <label>
+            Фильтр по году:
+            <input type="number" id="filterYear" placeholder="Введите год">
+        </label>
+        <label>
+            Фильтр по цене:
+            <input type="number" id="filterPrice" placeholder="Введите максимальную цену">
+        </label>
+    </div>
+
+    <!-- Таблица автомобилей -->
+    <div id="carTable"></div>
+<script>
+$(document).ready(function () {
+    // Изменение фона
+    const colors = ['#FFDDC1', '#B5EAEA', '#FFABAB', '#FFC3A0', '#D5AAFF'];
+    let currentColorIndex = 0;
+    $('#changeBackground').click(function () {
+        $('body').css('background-color', colors[currentColorIndex]);
+        currentColorIndex = (currentColorIndex + 1) % colors.length;
+    });
+
+    // Покупка автомобиля
+    $(document).on('click', '.buy-btn', function () {
+        const carName = $(this).closest('.car-item').data('name');
+        alert(`Вы купили ${carName}!`);
+    });
+
+    // Удаление автомобиля
+    $(document).on('click', '.delete-btn', function () {
+        $(this).closest('.car-item').remove();
+    });
+
+    // Отображение автомобилей ниже указанной цены
+    $('#maxPrice').on('input', function () {
+        const maxPrice = $(this).val();
+
+        // Проверяем, указана ли цена
+        if (maxPrice) {
+            // Скрываем все автомобили, затем показываем только подходящие
+            $('.car-item').each(function () {
+                const carPrice = $(this).data('price');
+                if (carPrice <= maxPrice) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        } else {
+            // Если цена не указана, показываем все автомобили
+            $('.car-item').show();
+        }
+    });
+
+    // Сброс фильтрации (показываем все автомобили)
+    $('#filterCars').click(function () {
+        $('#maxPrice').val(''); // Очищаем поле цены
+        $('.car-item').show(); // Показываем все автомобили
+    });
+
+    // Добавление нового автомобиля
+    $('#addCarForm').on('submit', function (e) {
+        e.preventDefault(); // Остановить отправку формы
+
+        // Получить данные из формы
+        const carName = $('#carName').val();
+        const carPrice = $('#carPrice').val();
+        const carImage = $('#carImage').val();
+
+        // Создать новый элемент автомобиля
+        const newCar = `
+        <div class="car-item" data-name="${carName}" data-price="${carPrice}">
+            <img src="${carImage}" alt="${carName}">
+            <div>
+                <h2>${carName}</h2>
+                <p>Цена: ${Number(carPrice).toLocaleString()} ₽</p>
+                <button class="btn btn-primary buy-btn"><i class="fas fa-shopping-cart"></i> Купить</button>
+                <button class="btn btn-danger delete-btn"><i class="fas fa-trash"></i> Удалить</button>
+            </div>
+        </div>
+        `;
+
+        // Добавить новый автомобиль в список
+        $('#carList').append(newCar);
+
+        // Очистить поля формы
+        $('#carName').val('');
+        $('#carPrice').val('');
+        $('#carImage').val('');
+    });
+
+    // Слайдер
+    $('.slider').slick({
+        autoplay: true,
+        dots: true,
+        slidesToShow: 2, // Показывать 2 машины за раз
+        slidesToScroll: 1,
+        infinite: true
+    });
+});
+</script>
+ <script>
+        // Данные XML (встроенные)
+        const xmlData = `<?xml version="1.0" encoding="UTF-8"?>
+        <cars>
+ <car>
+        <name>BMW X5</name>
+        <price>3000000</price>
+        <year>2023</year>
+    </car>
+    <car>
+        <name>Audi A6</name>
+        <price>2500000</price>
+        <year>2022</year>
+    </car>
+    <car>
+        <name>BMW M5</name>
+        <price>4000000</price>
+        <year>2022</year>
+    </car>
+    <car>
+        <name>Mercedes-Benz S-Class</name>
+        <price>5000000</price>
+        <year>2023</year>
+    </car>
+    <car>
+        <name>Tesla Model X</name>
+        <price>4500000</price>
+        <year>2021</year>
+    </car>
+    <car>
+        <name>Porsche Cayenne</name>
+        <price>3800000</price>
+        <year>2023</year>
+    </car>
+    <car>
+        <name>Audi Q7</name>
+        <price>3500000</price>
+        <year>2023</year>
+    </car>
+    <car>
+        <name>BMW X6</name>
+        <price>4200000</price>
+        <year>2023</year>
+    </car>
+    <car>
+        <name>Mercedes-Benz C-Class</name>
+        <price>3200000</price>
+        <year>2023</year>
+    </car>
+    <car>
+        <name>Tesla Model S</name>
+        <price>4000000</price>
+        <year>2021</year>
+    </car>
+        </cars>`;
+
+        // Парсим XML строку в объект
+        function parseXML(xmlString) {
+            const parser = new DOMParser();
+            return parser.parseFromString(xmlString, "application/xml");
+        }
+
+        // Получаем список автомобилей из XML
+        function getCarsFromXML(xmlDoc) {
+            const cars = [];
+            const carElements = xmlDoc.getElementsByTagName('car');
+            for (let i = 0; i < carElements.length; i++) {
+                const carElement = carElements[i];
+                const name = carElement.getElementsByTagName('name')[0].textContent;
+                const price = parseInt(carElement.getElementsByTagName('price')[0].textContent, 10);
+                const year = parseInt(carElement.getElementsByTagName('year')[0].textContent, 10);
+                cars.push({ name, price, year });
+            }
+            return cars;
+        }
+
+        // Отображаем данные как таблицу
+        function displayTable(cars) {
+            const tableContainer = document.getElementById('carTable');
+            tableContainer.innerHTML = ''; // очищаем таблицу
+            const table = document.createElement('table');
+
+            // Заголовок таблицы
+            const headerRow = document.createElement('tr');
+            headerRow.innerHTML = `
+                <th>Название</th>
+                <th>Цена</th>
+                <th>Год</th>
+                <th>Действия</th>
+            `;
+            table.appendChild(headerRow);
+
+            // Строки данных
+            cars.forEach(car => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${car.name}</td>
+                    <td>${car.price.toLocaleString()} ₽</td>
+                    <td>${car.year}</td>
+                    <td class="actions">
+                        <button class="buy-btn">Купить</button>
+                        <button class="delete-btn">Удалить</button>
+                    </td>
+                `;
+                table.appendChild(row);
+            });
+
+            tableContainer.appendChild(table);
+        }
+
+        // Сортировка по имени
+        function sortCarsByName(cars, ascending = true) {
+            return cars.sort((a, b) => {
+                if (ascending) {
+                    return a.name.localeCompare(b.name);
+                } else {
+                    return b.name.localeCompare(a.name);
+                }
+            });
+        }
+
+        // Сортировка по цене
+        function sortCarsByPrice(cars, ascending = true) {
+            return cars.sort((a, b) => ascending ? a.price - b.price : b.price - a.price);
+        }
+
+        // Фильтрация по году
+        function filterCarsByYear(cars, year) {
+            return cars.filter(car => car.year >= year);
+        }
+
+        // Фильтрация по цене
+        function filterCarsByPrice(cars, price) {
+            return cars.filter(car => car.price <= price);
+        }
+
+        // Инициализация страницы
+        window.onload = function() {
+            const xmlDoc = parseXML(xmlData);
+            let cars = getCarsFromXML(xmlDoc);
+
+            // Изначально показываем все автомобили
+            displayTable(cars);
+
+            // Сортировка по цене (возрастание)
+            document.getElementById('sortPriceAsc').onclick = function() {
+                const sortedCars = sortCarsByPrice(cars, true);
+                displayTable(sortedCars);
+            };
+
+            // Сортировка по цене (убывание)
+            document.getElementById('sortPriceDesc').onclick = function() {
+                const sortedCars = sortCarsByPrice(cars, false);
+                displayTable(sortedCars);
+            };
+
+            // Сортировка по имени
+            document.getElementById('sortName').onclick = function() {
+                const sortedCars = sortCarsByName(cars, true);
+                displayTable(sortedCars);
+            };
+
+            // Фильтрация по году
+            document.getElementById('filterYear').onchange = function(event) {
+                const year = parseInt(event.target.value, 10);
+                const filteredCars = filterCarsByYear(cars, year);
+                displayTable(filteredCars);
+            };
+
+            // Фильтрация по цене
+            document.getElementById('filterPrice').onchange = function(event) {
+                const price = parseInt(event.target.value, 10);
+                const filteredCars = filterCarsByPrice(cars, price);
+                displayTable(filteredCars);
+            };
+
+            // Обработчик для кнопки "Купить"
+            document.getElementById('carTable').addEventListener('click', function(event) {
+                if (event.target.classList.contains('buy-btn')) {
+                    const row = event.target.closest('tr');
+                    const carName = row.cells[0].textContent;
+                    alert(`Вы купили ${carName}`);
+                }
+            });
+
+            // Обработчик для кнопки "Удалить"
+            document.getElementById('carTable').addEventListener('click', function(event) {
+                if (event.target.classList.contains('delete-btn')) {
+                    const row = event.target.closest('tr');
+                    row.remove();
+                }
+            });
+        };
+    </script>
+</body>
+</html>
